@@ -1,17 +1,21 @@
-FROM ubuntu:latest AS build
+# ===== STAGE 1: build =====
+FROM eclipse-temurin:17-jdk AS build
 
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
+WORKDIR /app
 
 COPY . .
 
-RUN apt-get install maven -y
-RUN mvn clean install
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
 
-FROM openjdk:17-jdk-slim
+
+# ===== STAGE 2: runtime =====
+FROM eclipse-temurin:17-jre
+
+WORKDIR /app
 
 EXPOSE 8080
 
-COPY --from=build /target/todolist-1.0.0.jar app.jar
+COPY --from=build /app/target/todolist-1.0.0.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
