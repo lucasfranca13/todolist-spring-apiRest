@@ -3,6 +3,9 @@ package com.example.todolist.Controller;
 import com.example.todolist.task.ItaskRepository;
 import com.example.todolist.task.TaskModel;
 import com.example.todolist.utils.Utils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +18,15 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/tasks")
+@Tag(name = "Tasks", description = "Operações relacionadas às tarefas do usuário")
 public class TaskController extends TaskModel {
 
     @Autowired
     private ItaskRepository taskRepository;
 
     @PostMapping("/")
+    @Operation(summary = "Criar nova tarefa",
+            security = @SecurityRequirement(name = "basicAuth"))
     public ResponseEntity create(@RequestBody TaskModel taskModel, HttpServletRequest request){
         var idUser = request.getAttribute( "idUser");
         taskModel.setIdUser((UUID) idUser);
@@ -41,12 +47,16 @@ public class TaskController extends TaskModel {
     }
 
     @GetMapping("/")
+    @Operation(summary = "Listar tarefas do usuário autenticado",
+            security = @SecurityRequirement(name = "basicAuth"))
     public List<TaskModel> list(HttpServletRequest request) {
         var idUser = (UUID) request.getAttribute("idUser");
         return this.taskRepository.findByIdUser(idUser);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Atualizar tarefa existente",
+            security = @SecurityRequirement(name = "basicAuth"))
     public ResponseEntity update(
             @RequestBody TaskModel taskModel,
             @PathVariable UUID id,

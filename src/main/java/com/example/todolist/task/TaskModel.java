@@ -1,5 +1,6 @@
 package com.example.todolist.task;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity(name = "tb_tasks")
+@Schema(description = "Entidade que representa uma tarefa")
 public class TaskModel {
 
     /*
@@ -27,12 +29,17 @@ public class TaskModel {
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID id;
+    @Schema(description = "Descrição da tarefa", example = "Tarefa para auxiliar na rotina de trabalho.")
     private String description;
 
     @Column(length = 50)
+    @Schema(description = "Título da tarefa", example = "Primeira Tarefa")
     private String title;
+    @Schema(description = "Data Início", example = "2026-02-08T13:30:15")
     private LocalDateTime startAt;
+    @Schema(description = "Data Fim", example = "2026-02-12T17:00:00")
     private LocalDateTime endAt;
+    @Schema(description = "Prioridade", example = "Alta")
     private String priority;
 
     @CreationTimestamp
