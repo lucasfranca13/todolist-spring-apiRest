@@ -1,4 +1,4 @@
-# Gerenciamento de Tarefas com SpringBoot | REST API's
+# 📝 Gerenciamento de Tarefas com SpringBoot | REST API's
 
 API REST para gerenciamento de tarefas, desenvolvida com Spring Boot.
 Permite o cadastro de usuários e o controle de tarefas associadas a cada conta, utilizando autenticação básica.
